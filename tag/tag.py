@@ -1,7 +1,8 @@
 # import sys
+import os
 import pymysql
 import yaml
-
+from pathlib import Path
 
 
 def db(host:str, user:str, password:str, database:str):
@@ -13,14 +14,29 @@ def db(host:str, user:str, password:str, database:str):
         database=database,
     )
 
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM your_table")
+
+    results = cursor.fetchall()
+
+    for row in results:
+        print(row)
+
     print("数据库连接成功!")
 
 
 if __name__ == "__main__":
 
-    f = open("/Users/wei.wang/workspaceWork/tagProcess/tag/config.yaml", "r", encoding="utf-8")
-    config_str = f.read()
-    f.close()
+    current_directory = os.getcwd()
+
+    # yaml
+    file_path = Path(current_directory) /'config/config.yaml'
+    config_str = file_path.read_text()
+
+    # f = open("/Users/wei.wang/workspaceWork/tagProcess/config/config.yaml", "r", encoding="utf-8")
+    # config_str = f.read()
+    # f.close()
 
     print(config_str)
 
@@ -35,5 +51,11 @@ if __name__ == "__main__":
 
     db(host, username, password, database)
 
-    open(prompt_path, "r", encoding="utf-8")
+    # prompt
+    p_path = Path(current_directory) /prompt_path   
+    p_str = p_path.read_text()
+    print(p_str)
+
+
+
 
