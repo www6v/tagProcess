@@ -1,0 +1,388 @@
+任务背景：
+
+你是一位国际香精原材料供应商的数据分析师，以下是用户提及香水品牌时提到的品牌名列表（origin_brand_chi_origin_brand_eng），但该列表中的品牌名存在不规范的命名情况，属于非官方的中文直译或者音译。
+
+任务目标：
+1.        对用户提及品牌名列表进行识别，从【official_brand_chi_official_brand_eng】中选择正确规范的品牌名，生成新的品牌名列表，要求：
+•        必须从【official_brand_chi_official_brand_eng】中选择
+•        如果在【official_brand_chi_official_brand_eng】中找不到对应的品牌，则返回”未知”
+2.        重要限制：
+•        必须基于【official_brand_chi_official_brand_eng】中存在的品牌名进行选择，不允许发散产生新的值
+•        综合考虑【origin_brand_chi_origin_brand_eng】的描述，包括中文直译、音译或英文品牌名，判断与【official_brand_chi_official_brand_eng】的对应关系
+•        如果在当前列表中找不到对应品牌名，请考虑音译情况谨慎判断
+
+
+官方品牌名列表：
+- official_brand_chi_official_brand_eng
+芦丹氏_SERGE LUTENS
+解放橘郡_ETAT LIBRE D'ORANGE
+恺芮得_CREED
+凯利安_KILIAN
+馥马尔香水出版社_FREDERIC MALLE
+柏芮朵_BYREDO
+欧珑_ATELIER COLOGNE
+阿蒂仙之香_L'ARTISAN PARFUMEUR
+爱慕_AMOUAGE
+帕尔玛之水_ACQUA DI PARMA
+梅森·马吉拉_MAISON MARGIELA
+思琳_CELINE
+佩枪朱丽叶_JULIETTE HAS A GUN
+香水实验室_LE LABO
+山本耀司_YOHJI YAMAMOTO
+潘海利根_PENHALIGON'S
+马蒂埃_MATIERE PREMIERE
+杜鲁萨迪_TRUSSARDI
+艾卡柏_ACCA KAPPA
+华伦天奴_VALENTINO
+拉夫劳伦_RALPH LAUREN
+萧邦_CHOPARD
+杰尼亚_ERMENEGILDO ZEGNA
+希思黎_SISLEY
+卡地亚_CARTIER
+蒂芙尼_TIFFANY
+川久保玲_COMME DES GARCONS
+桃丝熊_TOUS
+古特尔_GOUTAL
+菲拉格慕_SALVATORE FERRAGAMO
+高缇耶_JEAN PAUL GAULTIER
+约翰·瓦维托斯_JOHN VARVATOS
+杰弗里·比尼_GEOFFREY BEENE
+路易威登_LOUIS VUITTON
+卡朗_CARON
+穆格勒_MUGLER
+普拉达_PRADA
+葆蝶家_BOTTEGA VENETA
+雅诗兰黛_ESTÉE LAUDER
+宾利_BENTLEY
+万宝龙_MONTBLANC
+纪梵希_GIVENCHY
+保罗史密斯_PAUL SMITH
+梵克雅宝_VAN CLEEF & ARPELS
+达西塔香氛_PARFUMS DUSITA
+缪缪_MIU MIU
+阿特金森_ATKINSONS
+徕汀_LYDEEN
+动物学家_ZOOLOGIST PERFUMES
+沙伊蓝_SHAY & BLUE LONDON
+嗅觉映像室_OLFACTIVE STUDIO
+罗马之香_PROFUMUM ROMA
+杜木之香_FRAGRANCE DU BOIS
+雅克·亨利_HENRY JACQUES
+迪拜精神_THE SPIRIT OF DUBAI
+罗嘉德芬_ROJA DOVE
+威劳瑞希_LORENZO VILLORESI
+罗格朗_ORIZA L. LEGRAND
+面具_MASQUE MILANO
+CB我讨厌香水_CB I HATE PERFUME
+杰奎斯·菲斯_JACQUES FATH
+兰蔻_LANCOME
+莫杰_MARC JACOBS
+橘滋_JUICY COUTURE
+伊丽莎白雅顿_ELIZABETH ARDEN
+大卫杜夫_DAVIDOFF
+浪凡_LANVIN
+罗意威_LOEWE
+凯文克莱_CALVIN KLEIN
+古驰_GUCCI
+纳西索_NARCISO RODRIGUEZ
+凯卓_KENZO
+三宅一生_ISSEY MIYAKE
+蔻依_CHLOE
+圣罗兰_YSL YVES SAINT LAURENT
+范思哲_VERSACE
+博柏利_BURBERRY
+莱俪_LALIQUE
+安娜苏_ANNA SUI
+阿玛尼_GIORGIO ARMANI
+迪奥_DIOR
+祖玛珑_JO MALONE
+汤姆·福特_TOM FORD
+宝格丽_BVLGARI
+香奈儿_CHANEL
+娇兰_GUERLAIN
+爱马仕_HERMES
+蒙塔莱_MONTALE
+米勒博涛斯_MILLER ET BERTAUX
+卡普里岛_CARTHUSIA
+香水故事_HISTOIRES DE PARFUMS
+鲁宾_LUBIN
+茉若森（威尼斯精品香氛）_MONOTHEME
+蝴蝶工匠_PAPILLON ARTISAN PERFUMES
+陶尔之香_TAUER PERFUMES
+MDCI之香_MDCI PARFUMS
+希爵夫_XERJOFF
+圣塔玛利亚诺维拉_SANTA MARIA NOVELLA
+非凡制造_THE DIFFERENT COMPANY
+莎邦_CHABAUD MAISON DE PARFUM
+液态创想_LIQUIDES IMAGINAIRES
+卡萨莫拉蒂_CASAMORATI DAL1888
+门蒂托洛萨_MENDITTOROSA
+玫默_MEMO
+米勒·海莉诗_MILLER HARRIS
+帝国之香_PARFUM D'EMPIRE
+祖氏挚爱_JO LOVES
+瑪麗之香_PARFUMS DE MARLY
+詹姆斯·海利_JAMES HEELEY
+尼柯徕（尼古莱）_NICOLAI
+弗拉潘_FRAPIN
+梵诗柯香_MAISON FRANCIS KURKDJIAN
+纳斯马图_NASOMATTO
+克霖_CLEAN
+蒂普提克_DIPTYQUE
+6IXTY 8IGHT_6IXTY 8IGHT
+艾斯迷_ACE MISS
+安米娜_ANMYNA
+奥兰诺_ORANOT
+巴格黎_PAORRI
+巴莉奥_BARRIO
+柏迪芬_PATIFON
+贝莫婷_BEMOTON
+玻儿_POPULART
+茶香师_CHA SENSE
+初蔓_CHUMAN
+春风十里_TEN MILES OF SPRING BREEZE
+大内密探_MAJESTY'S SECRET
+丹蔓妮_DANMANI
+迪蜜特_DEMETER
+递欧_DEOLD
+RE调香室_RE CLASSIFIED
+多彩丽人_COLORFUL BEAUTIES
+法颂_FENSHINE
+芬尚_TORSMELL
+高夫_GF
+古蔻_GUCOR
+古势_GSOUL
+冠群芳_CROWN QUNFANG
+黑爪_BLACK PAW
+后_WHOO
+花知晓_FLOWER KNOWS
+汇香坊_SCENT HOUSE
+简魅_JIANMEI
+健美创研_M'AYCREATE
+橘朵_JUDY DOLL
+克里斯提·鲁布托_CHRISTIAN LOUBOUTIN
+兰可欣_LCOSIN
+蓝秀_LANXIU
+勒颂蒂诺_L’ESSENCE DES NOTES
+零壹零陆_ZERO ONE ZERO SIX
+鎏婳书_LIUHUASHU
+美奥迪菲_MYOSOTIS
+美康粉黛_MEIKING
+美茜儿_MAYCHEER
+魅力资_MEILIZI
+名创优品_MINISO
+名蓝_MINGLAN
+摩登巴赫_MODERN BATH ART
+女王驾道_QUEEN'S STYLE
+欧丽源_OILYOUNG
+派雪_PA PASE
+潘达_PANDA
+泊诗蔻_ROYAL APOTHIC
+泊紫汀兰_BOZITINGDAN
+七绿_SEVEN GREEN
+全澳_QUANAO
+儒意_RUYI
+锐变_RUIBIAN
+三兔_SANTU
+三熹玉_SANXIYU
+姗那贝拉_SCENABELLA
+神英_SHENYING
+舒友阁_SHVYOG
+述之有味_FRAGRANCE FOR SPACE
+水木花草_SHUIMUHUACAO
+特希露_TEXILU
+无用享乐_WUYONGXIANGLE
+希汀_YVETTI
+心愿先生_MR.WISH
+雪尔妮兰_SELLION
+寻香之旅_SCENT TOUR
+亚菲儿_LAUYFEE
+叶圣西_叶圣西香水
+奕香_CARLOTTA
+张大奕_BIGEVE
+滋色_ZEESEA
+自然目录_NATURE EDITION
+AUF_AUF
+BLINGS_BLINGS
+C2U_C2U
+CHEERFLOR_CHEERFLOR
+COLORROSE_COLORROSE
+CROXX_CROXX
+FOELLIE_FOELLIE
+FPF_FPF
+GUDU_GUDU
+IMSOLE_IMSOLE
+伊索_AESOP
+野兽派_THE BEAST
+雅芳_AVON
+五朵里_UTTORI
+闻献_DOCUMENTS
+味谷_WEGOO
+维维尼奥_VIVINEVO
+维多利亚的秘密_VICTORIA'S SECRET
+圣美伦_SUSANNE LANG
+飒拉_ZARA
+气味图书馆_SCENT LIBRARY
+七寸九_SEPT NEUF EDP
+朴悦然_ADOPT
+欧舒丹_L'OCCITANE EN PROVENCE
+美体小铺_THE BODY SHOP
+岚舒_LUSH
+蔻驰_COACH
+科颜氏_KIEHL'S
+吉尔斯图亚特_JILL STUART
+观夏_TO SUMMER
+馥生六记_FUSHENGLIUJI
+茶灵_CHA LING
+冰希黎_BOITOWN
+柏氛_BON PARFUMEUR
+阿迪达斯_ADIDAS
+触肌_TTOUCHME
+托卡_TOCCA
+索里气味_SOLINOTES
+布雷布车间_ATELIER REBUL
+4711_4711
+JEAN MISS_JEAN MISS
+JEP_JEANNEENPROVENCE
+KDK_KDK
+SAKOSE_SAKOSE
+TJE_TJE
+V.V.LOVE_V.V.LOVE
+VNK_VNK
+WARMKISS_WARMKISS
+加利古_JALIGU
+MKAK_MKAK
+恩思恩_MCM
+安牡丹_ATD
+香蕉共和国_BANANA REPUBLIC
+杜嘉班纳_DOLCE & GABBANA
+SW19_SW19
+觉轶_JUEYI
+莫斯奇诺_MOSCHINO
+TAMBURINS_TAMBURINS
+巴黎世家_BALENCIAGA
+LOE_LOE
+桀骜先生_JIEAOXIANSHENG
+奔驰_MERCEDES-BENZ
+ATN_ATN
+初媞_SIANOAU
+TOZY_TOZY
+花宫娜_FRAGONARD
+诗芒_SHIMANG
+法缇丽_FATILI
+碧欧辟_BEOUPE
+资生堂_SHISEIDO
+忆佰氛_EBYVEN
+倩碧_CLINIQUE
+银杉_YINSHAN
+强生_JOHNSON’S
+无印良品_MUJI
+SACO_SACO
+舒肤佳_SAFEGUARD
+卡尔拉格斐_KARL LAGERFELD
+野兽青年_YOUNGBEAST
+柏世曼_POACHERMAN
+YOUSSOFUL_YOUSSOFUL
+NOTTIME_NOTTIME
+VE_VE
+苏慕格蓝_GKAK
+宣香_SCENTCHANT
+JUS_JUS
+浮香堂_FUXIANGTANG
+MITH_MITH
+可可小姐_COCOSILIYA
+米作_MIZUO
+风木槿_FENGMUJIN
+西子玲珑_XIZI LINGLONG
+OIU_OIU
+摩拉菲尔_MO RAFAEL
+芬迪_FENDI
+返常_ATYPIC EDITION
+安喏_AYNOIR
+旎讴_NOU
+MARCH_MARCH
+未知气味_THE MOOD
+拿破仑_NAPOLEON
+乐穆_LEMUT
+SYNESMOON_SYNESMOON
+阅岚_YUELAN
+BUTTERFLY_BUTTERFLY
+爵威尔_JWE
+蒂齐亚娜·特伦齐_TIZIANA TERENZI
+阿玛芙_ARMAF
+雨果博斯_HUGO BOSS
+非虚构_NONFICTION
+ZCG_ZCG
+松岛正树_MASAKI
+法蔻尼_FOCONIE
+梨花城_LIHUACHENG
+玫琳凯_MARY KAY
+雅芮_AERIN
+蔓希娅_MANXA
+德赖斯·范诺顿_DRIES VAN NOTEN
+三福_SANFU
+吉米周_JIMMY CHOO
+瑞士阿拉伯_SWISS ARABIAN
+威尼斯商人_THE MERCHANT OF VENICE
+乐加利恩_LE GALION
+ROOM1015_ROOM1015
+维克多与罗夫_VICTOR & ROLF
+雅克罗香_AKRO
+植物园_BOTANICAE
+卡夏尔_CACHAREL
+盟可睐_MONCLER
+古未界_COURREGES
+慢宋_MANSONG
+MELT SEASON_MELT SEASON
+香遇沙龙_MEET HOUSE
+罗莎_ROCHAS
+达西塔_DUSITA
+MLB_MLB
+莎辛那_ASSASSINA
+楠海香局_NANHAI FRAGRANCE BUREAU
+栀尚_ZHI SHANG
+言秀_YANXIU
+NODOFF_NODOFF
+LAVAS_LAVAS
+娜赛儿_LASTAR
+JORUM STUDIO_JORUM STUDIO
+妮姗_NISHANE
+洛蔻芳_LE COUVENT
+寓义_TO DEFINE
+FFS_FFS
+乐香杜唯_LE JARDIN RETROUVÉ
+JOURNAL_JOURNAL
+馡凡_PHILOSENSE
+巴尔曼_BALMAIN
+U9_U9
+登喜路_DUNHILL
+所闻_SOULVENT
+
+
+输出格式：
+
+请返回【origin_brand_chi_origin_brand_eng】和【official_brand_chi_official_brand_eng】的对应关系，格式如下：
+{
+  "mapping": [
+    {
+      "origin_brand_chi_origin_brand_eng": "string",
+      "official_brand_chi_official_brand_eng": "string"
+    }
+  ]
+}
+
+注意：
+1.        如果无法匹配，请返回 "official_brand_chi_official_brand_eng": "未知"；
+2.        禁止输出【official_brand_chi_official_brand_eng】列表外的值；
+3.        优先考虑中英文对应的音译、直译匹配。
+
+
+输入示例：
+用户品牌提及列表：
+- origin_brand_chi_origin_brand_eng
+香奈儿_Chanel
+
+
+请严格遵守上述格式，除此之外不要返回任何其他内容，包括解释、说明、分析过程等等.
+下面是输入数据:
+
