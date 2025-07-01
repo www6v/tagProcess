@@ -1,20 +1,22 @@
 from db_init import create_db_engine, init_db, create_tables
 import sqlalchemy
+from tagging import content_tagging 
 
 
-def input_select():
-    # db_url = "sqlite:///example.db"  # Replace with your actual database URL
-    db_url = "mysql+pymysql://artgent_user:ArtgentData789@rm-uf6mb1y1i2970r1goao.mysql.rds.aliyuncs.com/artgent"  # Example MySQL URL
+def create_metadata(db_url: str):
+    # db_url = "sqlite:///example.db"  # Replace with your actual database URL# Example MySQL URL
     engine = create_db_engine(db_url)
     
-    # Initialize the database and create tables
     init_db(engine)
     
-    # Create tables using the metadata
     metadata = sqlalchemy.MetaData()
+
+    return engine, metadata    
+
+def input_select(engine, metadata, content_tagging_creation_partial):
     dwd_filtered_input = create_tables(metadata)
     
-    print("Tables created:", dwd_filtered_input.name)
+    # print("Tables created:", dwd_filtered_input.name)
 
     with engine.connect() as connection:
         # metadata.create_all(connection)
@@ -29,8 +31,9 @@ def input_select():
         for row in result:
             # print(row)
             print(row.ids, row.content)
+            content_tagging_creation_partial(row.content)
 
-if __name__ == "__main__":
-    input_select()
+# if __name__ == "__main__":
+#     input_select()
 
 

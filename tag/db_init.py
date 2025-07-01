@@ -12,6 +12,7 @@ def init_db(engine: sqlalchemy.engine.Engine):
     metadata = sqlalchemy.MetaData()
     metadata.create_all(engine)
 
+
 def create_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
 
     # person = sqlalchemy.Table(
