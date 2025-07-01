@@ -52,9 +52,9 @@ def consumer(index=1, content_tagging_creation_partial=None, engine=None, metada
         ids = item["ids"]
         content = item["content"]
 
-        validated_success_data = content_tagging_creation_partial(ids, content)  
-        # validated_success_data = content_tagging_creation_partial(row.ids, row.content)       
-        input_insert(engine, metadata, validated_success_data, run_id)
+        # validated_success_data = content_tagging_creation_partial(ids, content)  
+        # # validated_success_data = content_tagging_creation_partial(row.ids, row.content)       
+        # input_insert(engine, metadata, validated_success_data, run_id)
 
         print(f"消费 ---> {ids}")
 
