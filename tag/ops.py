@@ -11,7 +11,7 @@ import gevent
 from gevent.queue import Queue  # 队列 gevent中的队列
 # import random
 
-task_queue = Queue(10)
+task_queue = Queue(1000)
 
 # task_queue = queue.Queue()
 
