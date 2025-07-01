@@ -1,7 +1,7 @@
 model:
        qwen-plus
 prompt_path:
-       prompts/apple_learn_curve.tpl
+       prompts/danone_post.tpl
 dsn:
   host: rm-uf6mb1y1i2970r1goao.mysql.rds.aliyuncs.com
   username: artgent_user

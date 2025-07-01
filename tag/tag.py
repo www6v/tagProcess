@@ -1,13 +1,14 @@
 # import sys
 from functools import partial
 import os
-import pymysql
+# import pymysql
 import yaml
 from pathlib import Path
 from ops import input_select
 from ops import create_metadata
-from tagging import content_tagging 
+# from tagging import content_tagging 
 from tagging import content_tagging_creation
+import uuid
 
 
 # def db(host:str, user:str, password:str, database:str):
@@ -36,9 +37,6 @@ def config_get():
     file_path = Path(current_directory) /'config/config.yaml'
     config_str = file_path.read_text()
 
-    # f = open("/Users/wei.wang/workspaceWork/tagProcess/config/config.yaml", "r", encoding="utf-8")
-    # config_str = f.read()
-    # f.close()
 
     print(config_str)
 
@@ -70,7 +68,9 @@ if __name__ == "__main__":
     engine,metadata = create_metadata(db_url)
     content_tagging_creation_partial = partial(content_tagging_creation, prompt ,qwenToken, modelName)
 
-    input_select(engine, metadata, content_tagging_creation_partial)
+    run_id = uuid.uuid4()
+
+    input_select(engine, metadata, content_tagging_creation_partial, run_id)
 
     # db(host, username, password, database)
 
