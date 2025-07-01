@@ -3,27 +3,26 @@ import os
 import pymysql
 import yaml
 from pathlib import Path
+from ops import input_select
 
 
-def db(host:str, user:str, password:str, database:str):
-    # 创建数据库连接
-    db = pymysql.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database,
-    )
+# def db(host:str, user:str, password:str, database:str):
+#     # 创建数据库连接
+#     db = pymysql.connect(
+#         host=host,
+#         user=user,
+#         password=password,
+#         database=database,
+#     )
 
-    cursor = db.cursor()
+#     cursor = db.cursor()
+#     cursor.execute("SELECT * FROM your_table")
+#     results = cursor.fetchall()
 
-    cursor.execute("SELECT * FROM your_table")
+#     for row in results:
+#         print(row)
 
-    results = cursor.fetchall()
-
-    for row in results:
-        print(row)
-
-    print("数据库连接成功!")
+#     print("数据库连接成功!")
 
 
 if __name__ == "__main__":
@@ -48,8 +47,10 @@ if __name__ == "__main__":
 
     prompt_path = config["prompt_path"] 
 
+    input_select()
 
-    db(host, username, password, database)
+    # db(host, username, password, database)
+
 
     # prompt
     p_path = Path(current_directory) /prompt_path   

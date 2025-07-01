@@ -1,8 +1,8 @@
 from db_init import create_db_engine, init_db, create_tables
 import sqlalchemy
 
-if __name__ == "__main__":
-    # Example usage
+
+def input_select():
     # db_url = "sqlite:///example.db"  # Replace with your actual database URL
     db_url = "mysql+pymysql://artgent_user:ArtgentData789@rm-uf6mb1y1i2970r1goao.mysql.rds.aliyuncs.com/artgent"  # Example MySQL URL
     engine = create_db_engine(db_url)
@@ -29,5 +29,8 @@ if __name__ == "__main__":
         for row in result:
             # print(row)
             print(row.ids, row.content)
+
+if __name__ == "__main__":
+    input_select()
 
 
