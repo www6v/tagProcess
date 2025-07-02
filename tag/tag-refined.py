@@ -24,18 +24,18 @@ def config_get():
     # database = config["dsn"]["database"]  
     # prompt
     prompt_path = config["prompt_path"] 
-    # qwenToken
-    qwenToken = config["qwen_token"]
+    # api_token
+    api_token = config["api_token"]
     # modelName
     modelName = config["model"]
     # db_url 
     db_url = config["db_url"]
 
-    return current_directory,prompt_path,qwenToken,modelName, db_url
+    return current_directory,prompt_path,api_token,modelName, db_url
 
 
 if __name__ == "__main__":
-    current_directory, prompt_path, qwenToken, modelName, db_url = config_get()
+    current_directory, prompt_path, api_token, modelName, db_url = config_get()
 
     # system prompt
     p_path = Path(current_directory) /prompt_path   
@@ -45,5 +45,5 @@ if __name__ == "__main__":
 
     engine,metadata = create_metadata(db_url)    
 
-    refined(metadata, engine)
+    refined(metadata, engine, systemPrompt, api_token, modelName)
 

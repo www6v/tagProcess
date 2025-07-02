@@ -68,3 +68,15 @@ def create_dwd_issue_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
 
     return dwd_issue
 
+
+def create_dwd_refined_tag_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
+    dwd_refined_tag = sqlalchemy.Table(
+        'dwd_refined_tag', metadata,
+        sqlalchemy.Column('id', sqlalchemy.INTEGER, primary_key=True, autoincrement=True),          
+        sqlalchemy.Column('biz_type', sqlalchemy.String(10000), nullable=True),  
+        sqlalchemy.Column('biz_type_index', sqlalchemy.String(10000), nullable=True),
+        sqlalchemy.Column('refined_tag', sqlalchemy.String(10000), nullable=True),
+        extend_existing=True              
+    )   
+
+    return dwd_refined_tag

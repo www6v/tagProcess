@@ -1,4 +1,4 @@
-from db_init import create_db_engine, init_db, create_input_tables, create_validate_tables, create_dwd_issue_tables
+from db_init import create_db_engine, init_db, create_input_tables, create_validate_tables, create_dwd_issue_tables, create_dwd_refined_tag_tables
 import sqlalchemy
 # from tagging import content_tagging 
 import time
@@ -6,6 +6,7 @@ import time
 import queue
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from openai_api import openai_api
 
 # from gevent import monkey; monkey.patch_all()
 # import gevent
@@ -107,9 +108,10 @@ def input_insert(engine, metadata, validated_success_data, run_id):
         connection.commit() 
 
 
-def refined(metadata, engine):
+def refined(metadata, engine, systemPrompt, api_token, modelName):
     dwd_issue = create_dwd_issue_tables(metadata)    
 
+    systemPromptP = systemPrompt
     with engine.connect() as connection:        
         query = dwd_issue.select()
         result = connection.execute(query)
@@ -117,6 +119,18 @@ def refined(metadata, engine):
         # obj_list = []
         for row in result:
             print(row.content)
+
+            userPrompt = row.content
+            systemPromptP = openai_api(userPrompt, systemPromptP, api_token, modelName) 
+            
+            dwd_refined_tag = create_dwd_refined_tag_tables(metadata)
+            insert_query = dwd_refined_tag.insert().values(
+                biz_type="market",
+                biz_type_index="market",
+                refined_tag=systemPromptP
+            )
+            connection.execute(insert_query)
+            connection.commit() 
 
 # if __name__ == "__main__":
 #     input_select()

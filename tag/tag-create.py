@@ -51,7 +51,7 @@ def config_get():
     # prompt
     prompt_path = config["prompt_path"] 
     # qwenToken
-    qwenToken = config["qwen_token"]
+    qwenToken = config["api_token"]
     # modelName
     modelName = config["model"]
     # db_url 
