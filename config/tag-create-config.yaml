@@ -13,4 +13,4 @@ query:
 db_url:
   mysql+pymysql://artgent_user:ArtgentData789@rm-uf6mb1y1i2970r1goao.mysql.rds.aliyuncs.com/artgent
 api_token:
-  sk-ff84a4311f0d484581f7decac8b54829
+  xxx
