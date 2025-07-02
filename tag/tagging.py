@@ -1,6 +1,6 @@
 import requests
 import time
-from qwen_test import createTag
+from testing.qwen_test import createTag
 # import os
 import json
 import asyncio

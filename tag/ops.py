@@ -16,7 +16,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 pool = ThreadPoolExecutor(max_workers=1000)  # 创建线程池，最大线程数为10
 
 
-
 def validate_success_data(content_tagging_creation_partial, ids, content):
     """
     Validate the success data by calling the content tagging creation function.
