@@ -4,11 +4,13 @@ import os
 # import pymysql
 import yaml
 from pathlib import Path
-from ops import input_select
-from ops import create_metadata
+import uuid
+
 # from tagging import content_tagging 
 from tagging import content_tagging_creation
-import uuid
+from ops import input_select
+from ops import create_metadata
+
 
 
 # def db(host:str, user:str, password:str, database:str):
@@ -34,7 +36,7 @@ def config_get():
     current_directory = os.getcwd()
 
     # yaml
-    file_path = Path(current_directory) /'config/config.yaml'
+    file_path = Path(current_directory) /'config/tag-create-config.yaml'
     config_str = file_path.read_text()
 
 
@@ -60,7 +62,7 @@ def config_get():
 if __name__ == "__main__":
     current_directory, prompt_path, qwenToken, modelName, db_url = config_get()
 
-    # prompt
+    # system prompt
     p_path = Path(current_directory) /prompt_path   
     systemPrompt = p_path.read_text()
     print(systemPrompt)

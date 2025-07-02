@@ -56,3 +56,15 @@ def create_validate_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
     )   
 
     return validated_success_data
+
+
+def create_dwd_issue_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
+    dwd_issue = sqlalchemy.Table(
+        'dwd_issue', metadata,
+        sqlalchemy.Column('ids', sqlalchemy.String(10000), nullable=True),  
+        sqlalchemy.Column('content', sqlalchemy.String(10000), nullable=True),
+        extend_existing=True              
+    )   
+
+    return dwd_issue
+

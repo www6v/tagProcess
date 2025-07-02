@@ -1,0 +1,16 @@
+model:
+       qwen-max
+prompt_path:
+       refined-prompts/init-prompt.tpl
+# dsn:
+#   host: rm-uf6mb1y1i2970r1goao.mysql.rds.aliyuncs.com
+#   username: artgent_user
+#   password: ArtgentData789
+#   database: artgent
+query: 
+  sql:
+    select * from dwd_apple_learn_curve_input
+db_url:
+  mysql+pymysql://artgent_user:ArtgentData789@rm-uf6mb1y1i2970r1goao.mysql.rds.aliyuncs.com/artgent
+qwen_token:
+  sk-ff84a4311f0d484581f7decac8b54829

@@ -1,4 +1,4 @@
-from db_init import create_db_engine, init_db, create_input_tables, create_validate_tables
+from db_init import create_db_engine, init_db, create_input_tables, create_validate_tables, create_dwd_issue_tables
 import sqlalchemy
 # from tagging import content_tagging 
 import time
@@ -105,6 +105,18 @@ def input_insert(engine, metadata, validated_success_data, run_id):
         )
         connection.execute(insert_query)
         connection.commit() 
+
+
+def refined(metadata, engine):
+    dwd_issue = create_dwd_issue_tables(metadata)    
+
+    with engine.connect() as connection:        
+        query = dwd_issue.select()
+        result = connection.execute(query)
+
+        # obj_list = []
+        for row in result:
+            print(row.content)
 
 # if __name__ == "__main__":
 #     input_select()
