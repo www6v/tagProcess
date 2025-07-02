@@ -117,6 +117,7 @@ def refined(metadata, engine, systemPrompt, api_token, modelName):
         result = connection.execute(query)
 
         # obj_list = []
+        index = 0
         for row in result:
             print(row.content)
 
@@ -129,6 +130,7 @@ def refined(metadata, engine, systemPrompt, api_token, modelName):
                 biz_type_index="market",
                 refined_tag=systemPromptP
             )
+            index = index + 1
             connection.execute(insert_query)
             connection.commit() 
 
