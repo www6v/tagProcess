@@ -62,11 +62,13 @@ if __name__ == "__main__":
 
     # prompt
     p_path = Path(current_directory) /prompt_path   
-    prompt = p_path.read_text()
-    print(prompt)
+    systemPrompt = p_path.read_text()
+    print(systemPrompt)
+
+    systemPrompt = '你是个专业的标签生成器，请根据内容生成标签。'
 
     engine,metadata = create_metadata(db_url)
-    content_tagging_creation_partial = partial(content_tagging_creation, prompt ,qwenToken, modelName)
+    content_tagging_creation_partial = partial(content_tagging_creation, systemPrompt ,qwenToken, modelName)
 
     run_id = uuid.uuid4()
 

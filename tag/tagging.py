@@ -1,7 +1,9 @@
 import requests
 import time
+from qwen_test import createTag
 # import os
-# import json
+import json
+import asyncio
 
 
 def send_post_request(url: str, json_body: dict, headers: dict = None, params: dict = None)  -> requests.Response:
@@ -32,11 +34,10 @@ def send_post_request(url: str, json_body: dict, headers: dict = None, params: d
 
 
 
-def prepare(strDict, prompt, qwenToken, modelName):
-    data = strDict
+def prepare(userPrompt, systemPrompt, qwenToken, modelName):
+    data = userPrompt
 
-    # URL to send the request to
-    url = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation"
+    url = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation"   
 
     model = modelName
 
@@ -45,7 +46,7 @@ def prepare(strDict, prompt, qwenToken, modelName):
         "input": {
             "messages": [{
                     "role": "system",
-                    "content":  prompt
+                    "content":  systemPrompt
                 },
                 {
                     "role": "user",
@@ -104,8 +105,9 @@ def content_tagging(strDict: str, prompt:str, qwenToken:str,modelName:str) -> di
     }
 
 ### add
-def content_tagging_creation(prompt:str, qwenToken:str,modelName:str, ids:str, strDict: str) -> dict:
-    url, json_body, headers, params = prepare(strDict, prompt, qwenToken, modelName)
+def content_tagging_creation(systemPrompt:str, qwenToken:str,modelName:str, ids:str, userSystem: str) -> dict:
+    url, json_body, headers, params = prepare(userSystem, systemPrompt, qwenToken, modelName)
+    print(f"tagging with llm.  --> ids: {ids}")
 
     response = send_post_request(url, json_body, headers, params)
 
@@ -113,6 +115,8 @@ def content_tagging_creation(prompt:str, qwenToken:str,modelName:str, ids:str, s
     # data = json.loads(json_str)
 
     data = response.json()
+
+    print(f"tagging with llm.  --> complete: {ids}")
 
     start_request_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     validated_success_data = {
@@ -124,14 +128,54 @@ def content_tagging_creation(prompt:str, qwenToken:str,modelName:str, ids:str, s
         "content": data["output"]["choices"][0]["message"]["content"],
         "data_id": ids,
 
-        "prompt": prompt,
+        "prompt": systemPrompt,
         "modelName": modelName,
         "source_response": data["output"]["choices"][0]["message"]["content"],
         "start_request_time": start_request_time
     }
 
+    print(f"tagging with llm.  --> complete: {validated_success_data}")
+
     return validated_success_data
 
-    # return {
-    #     "result": validated_success_data,
-    # }
+
+
+# ### add
+# def content_tagging_creation(systemPrompt:str, qwenToken:str,modelName:str, ids:str, userSystem: str) -> dict:
+#     url, json_body, headers, params = prepare(userSystem, systemPrompt, qwenToken, modelName)
+#     print(f"tagging with llm.  --> ids: {ids}")
+
+#     print("strDict: " + userSystem)
+
+#     content = asyncio.run(createTag(userSystem))
+#     # data = json.loads(text)
+
+#     # response = send_post_request(url, json_body, headers, params)
+
+
+#     # json_str = str(response.json())
+#     # data = json.loads(json_str)
+
+#     # data = response.json()
+
+#     print(f"tagging with llm.  --> complete: {ids}")
+
+#     start_request_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+#     validated_success_data = {
+#         "input_tokens": data["usage"]["input_tokens"],
+#         "output_tokens": data["usage"]["output_tokens"],
+#         "total_tokens": data["usage"]["total_tokens"],
+#         "request_id": data["request_id"],
+#         "finish_reason": data["output"]["choices"][0]["finish_reason"],
+#         "content": data["output"]["choices"][0]["message"]["content"],
+#         "data_id": ids,
+
+#         "prompt": systemPrompt,
+#         "modelName": modelName,
+#         "source_response": data["output"]["choices"][0]["message"]["content"],
+#         "start_request_time": start_request_time
+#     }
+
+#     print(f"tagging with llm.  --> complete: {validated_success_data}")
+
+#     return validated_success_data    

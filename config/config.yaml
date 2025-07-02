@@ -1,5 +1,5 @@
 model:
-       qwen-plus
+       qwen-max
 prompt_path:
        prompts/danone_post.tpl
 dsn:
