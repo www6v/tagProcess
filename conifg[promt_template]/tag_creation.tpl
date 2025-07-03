@@ -6,9 +6,9 @@
 {{ target }} 
 
 ## 字段定义
-{{ for }}
-  {{ tag field }}
-{{ for }}
+{% for foo in tags %}
+       {{ foo.name }}  {{ foo.tag_name }}   : {{ foo.desc }}       
+{% endfor %}
 
 
 
@@ -42,7 +42,5 @@
 
 json
 
-{{ for }}
-  {{ tag field }}
-{{ for }}
+{{ tag_json_string }}
 
