@@ -8,7 +8,7 @@ def jinja_render_systemPrompt(systemPrompt:str, categories:str):
 
     output = template.render(categories=categories)
 
-    print(output) 
+    # print(output) 
     return output
 
 

@@ -1,4 +1,5 @@
-from db_init import create_db_engine, init_db, create_input_tables, create_validate_tables, create_dwd_issue_tables, create_dwd_refined_tag_tables
+
+from db.db_init import create_db_engine, init_db, create_input_tables, create_validate_tables, create_dwd_issue_tables, create_dwd_refined_tag_tables
 import sqlalchemy
 # from tagging import content_tagging 
 import time
@@ -6,7 +7,7 @@ import time
 import queue
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from openai_api import openai_api
+from db.openai_api import openai_api
 
 # from gevent import monkey; monkey.patch_all()
 # import gevent

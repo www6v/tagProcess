@@ -1,7 +1,7 @@
 model:
        chatgpt-4o-latest
 prompt_path:
-       refined-templates/danone_refine_product.tpl
+       config[refined-templates]/danone_refine_product.tpl
 # dsn:
 #   host: rm-uf6mb1y1i2970r1goao.mysql.rds.aliyuncs.com
 #   username: artgent_user

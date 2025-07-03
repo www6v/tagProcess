@@ -1,3 +1,7 @@
+from db import *
+from tag import *
+
+
 # import sys
 from functools import partial
 import os
@@ -7,9 +11,9 @@ from pathlib import Path
 import uuid
 
 # from tagging import content_tagging 
-from tagging import content_tagging_creation
-from ops import input_select
-from ops import create_metadata
+from tag.tagging import content_tagging_creation
+from db.ops import input_select
+from db.ops import create_metadata
 
 
 
