@@ -4,7 +4,8 @@ from pathlib import Path
 
 from ops import create_metadata
 from ops import refined
-from db_init import  create_dwd_issue_tables
+# from db_init import  create_dwd_issue_tables
+from jinja_render import jinja_render_systemPrompt
 
 def config_get():
     current_directory = os.getcwd()
@@ -39,9 +40,12 @@ if __name__ == "__main__":
 
     # system prompt
     p_path = Path(current_directory) /prompt_path   
-    systemPrompt = p_path.read_text()
-    print(systemPrompt)
+    systemPrompt_without_categories = p_path.read_text()
+    print(systemPrompt_without_categories)
 
+    categories = "#my categories#" # get from db
+
+    systemPrompt = jinja_render_systemPrompt(systemPrompt_without_categories, categories)
 
     engine,metadata = create_metadata(db_url)    
 
