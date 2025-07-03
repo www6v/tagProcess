@@ -2,10 +2,8 @@ from db import *
 from tag import *
 
 
-# import sys
 from functools import partial
 import os
-# import pymysql
 import yaml
 from pathlib import Path
 import uuid
@@ -14,26 +12,6 @@ import uuid
 from tag.tagging import content_tagging_creation
 from db.ops import input_select
 from db.ops import create_metadata
-
-
-
-# def db(host:str, user:str, password:str, database:str):
-#     # 创建数据库连接
-#     db = pymysql.connect(
-#         host=host,
-#         user=user,
-#         password=password,
-#         database=database,
-#     )
-
-#     cursor = db.cursor()
-#     cursor.execute("SELECT * FROM your_table")
-#     results = cursor.fetchall()
-
-#     for row in results:
-#         print(row)
-
-#     print("数据库连接成功!")
 
 
 def config_get():
@@ -80,7 +58,6 @@ if __name__ == "__main__":
 
     input_select(engine, metadata, content_tagging_creation_partial, run_id)
 
-    # db(host, username, password, database)
 
 
 

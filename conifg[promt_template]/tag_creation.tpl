@@ -40,7 +40,7 @@
 
 输出格式：
 
-json
-
 {{ tag_json_string }}
 
+
+下面是输入数据:

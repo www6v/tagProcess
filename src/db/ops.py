@@ -1,5 +1,11 @@
 
-from db.db_init import create_db_engine, init_db, create_input_tables, create_validate_tables, create_dwd_issue_tables, create_dwd_refined_tag_tables
+from db.db_init import (create_db_engine, 
+                        init_db, 
+                        input_tables, 
+                        validate_tables, 
+                        dwd_issue_tables, 
+                        dwd_refined_tag_tables,
+                        tag_creation_template)
 import sqlalchemy
 # from tagging import content_tagging 
 import time
@@ -8,6 +14,7 @@ import queue
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from db.openai_api import openai_api
+
 
 # from gevent import monkey; monkey.patch_all()
 # import gevent
@@ -37,7 +44,7 @@ def create_metadata(db_url: str):
     return engine, metadata    
 
 def input_select(engine, metadata, content_tagging_creation_partial, run_id):
-    dwd_filtered_input = create_input_tables(metadata)
+    dwd_filtered_input = input_tables(metadata)
     
     # print("Tables created:", dwd_filtered_input.name)
 
@@ -71,7 +78,7 @@ def input_select(engine, metadata, content_tagging_creation_partial, run_id):
 
         
 def input_insert(engine, metadata, validated_success_data, run_id):
-    validate = create_validate_tables(metadata)    
+    validate = validate_tables(metadata)    
 
     with engine.connect() as connection:
         # contentStr = validated_success_data['content']
@@ -110,7 +117,7 @@ def input_insert(engine, metadata, validated_success_data, run_id):
 
 
 def refined(metadata, engine, systemPrompt, api_token, modelName):
-    dwd_issue = create_dwd_issue_tables(metadata)    
+    dwd_issue = dwd_issue_tables(metadata)    
 
     systemPromptP = systemPrompt
     with engine.connect() as connection:        
@@ -125,7 +132,7 @@ def refined(metadata, engine, systemPrompt, api_token, modelName):
             userPrompt = row.content
             systemPromptP = openai_api(userPrompt, systemPromptP, api_token, modelName) 
             
-            dwd_refined_tag = create_dwd_refined_tag_tables(metadata)
+            dwd_refined_tag = dwd_refined_tag_tables(metadata)
             insert_query = dwd_refined_tag.insert().values(
                 biz_type="market",
                 biz_type_index="market",
@@ -135,6 +142,19 @@ def refined(metadata, engine, systemPrompt, api_token, modelName):
             connection.execute(insert_query)
             connection.commit() 
 
+
+def select_tag_creation_template(metadata, engine) -> list:
+    tag_creation_template_table = tag_creation_template(metadata)
+    
+    list_result = []
+    with engine.connect() as connection:  
+        query = tag_creation_template_table.select().where(tag_creation_template_table.c.id == 1)
+        result = connection.execute(query)
+
+        for row in result:
+            list_result.append({"id": row.id, "role": row.role, "target":row.target, "tag_list": row.tag_list})
+
+    return list_result
 # if __name__ == "__main__":
 #     input_select()
 

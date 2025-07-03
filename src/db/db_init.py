@@ -14,7 +14,7 @@ def init_db(engine: sqlalchemy.engine.Engine):
     metadata.create_all(engine)
 
 
-def create_input_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
+def input_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
 
     # person = sqlalchemy.Table(
     #     'person', metadata,
@@ -34,7 +34,7 @@ def create_input_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
     return dwd_filtered_input
 
 
-def create_validate_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
+def validate_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
     validated_success_data = sqlalchemy.Table(
         'validated_success_data', metadata,
         sqlalchemy.Column('id', sqlalchemy.INTEGER, primary_key=True, autoincrement=True),  
@@ -58,7 +58,7 @@ def create_validate_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
     return validated_success_data
 
 
-def create_dwd_issue_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
+def dwd_issue_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
     dwd_issue = sqlalchemy.Table(
         'dwd_issue', metadata,
         sqlalchemy.Column('ids', sqlalchemy.String(10000), nullable=True),  
@@ -69,7 +69,7 @@ def create_dwd_issue_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
     return dwd_issue
 
 
-def create_dwd_refined_tag_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
+def dwd_refined_tag_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
     dwd_refined_tag = sqlalchemy.Table(
         'dwd_refined_tag', metadata,
         sqlalchemy.Column('id', sqlalchemy.INTEGER, primary_key=True, autoincrement=True),          
@@ -80,3 +80,16 @@ def create_dwd_refined_tag_tables(metadata: sqlalchemy.MetaData) -> sqlalchemy.T
     )   
 
     return dwd_refined_tag
+
+
+def tag_creation_template(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
+    tag_creation_template = sqlalchemy.Table(
+        'tag_creation_template', metadata,
+        sqlalchemy.Column('id', sqlalchemy.INTEGER, primary_key=True, autoincrement=True),   
+        sqlalchemy.Column('role', sqlalchemy.String(500), nullable=True),         
+        sqlalchemy.Column('target', sqlalchemy.String(500), nullable=True),  
+        sqlalchemy.Column('tag_list', sqlalchemy.String(5000), nullable=True),
+        extend_existing=True              
+    )   
+
+    return tag_creation_template
