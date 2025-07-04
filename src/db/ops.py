@@ -43,7 +43,7 @@ def create_metadata(db_url: str):
 
     return engine, metadata    
 
-def input_select(engine, metadata, content_tagging_creation_partial, run_id):
+def input_select(engine, metadata, content_tagging_creation_partial, run_id)-> list:
     dwd_filtered_input = input_tables(metadata)
     
     # print("Tables created:", dwd_filtered_input.name)
@@ -58,6 +58,7 @@ def input_select(engine, metadata, content_tagging_creation_partial, run_id):
         query = dwd_filtered_input.select()
         result = connection.execute(query)
 
+        validate_success_data_list = []
         # obj_list = []
         for row in result:
             # print(row)
@@ -66,11 +67,11 @@ def input_select(engine, metadata, content_tagging_creation_partial, run_id):
 
             validate_success_data = content_tagging_creation_partial(row.ids, row.content)
 
-            input_insert(engine, metadata, validate_success_data, run_id)
+            validate_success_data_list.append(validate_success_data)
             # obj = pool.submit(validate_success_data, content_tagging_creation_partial, row.ids, row.content)
             # obj_list.append(obj)
 
-
+        return validate_success_data_list
         # for future in as_completed(obj_list):
         #     data = future.result()
         #     print(data)

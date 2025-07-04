@@ -51,8 +51,9 @@ if __name__ == "__main__":
     categories = "#my categories#" # get from db
 
     systemPrompt = jinja_render_systemPrompt(systemPrompt_without_categories, categories)
-
     engine,metadata = create_metadata(db_url)  
+    
+
     
     refined(metadata, engine, systemPrompt, api_token, modelName)
 
