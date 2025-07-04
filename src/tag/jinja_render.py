@@ -1,5 +1,7 @@
 from jinja2 import Template
 import json
+# import os
+from tag.config import config_get_tag_create
 
 
 def jinja_render_systemPrompt(systemPrompt:str, categories:str):
@@ -36,8 +38,9 @@ def jinja_render_file(tag_creation_templates:list):
     tag_json_string = json.dumps(tag_json_list, ensure_ascii=False, indent=2)
 
 
-    # 定义模板
-    template = Template(open("/Users/wei.wang/workspaceWork/tagProcess/conifg[promt_template]/tag_creation.tpl").read())
+    current_directory,prompt_path,qwenToken,modelName, db_url = config_get_tag_create()
+    # 定义模板  
+    template = Template(open(current_directory + "/config/promt_template/tag_creation.tpl").read())
 
 
     # 渲染模板

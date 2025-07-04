@@ -1,7 +1,7 @@
 model:
-       qwen-plus
+       chatgpt-4o-latest
 prompt_path:
-       config[creation_prompts]/danone_post.tpl
+       config/refined_templates/danone_refine_product.tpl
 query: 
   sql:
     select * from dwd_apple_learn_curve_input

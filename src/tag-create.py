@@ -1,49 +1,17 @@
-from db import *
-from tag import *
-
-
-from functools import partial
-import os
-import yaml
 from pathlib import Path
 import uuid
-
-# from tagging import content_tagging 
-from tag.tagging import content_tagging_creation
-from tag.jinja_render import jinja_render_file
 
 from db.ops import (select_dwd_filtered_input, 
                     insert_validated_success_data,
                     create_metadata, 
                     select_tag_creation_template)
+from tag.tagging import content_tagging_creation
+from tag.jinja_render import jinja_render_file
+from tag.config import config_get_tag_create
 
-
-def config_get():
-    current_directory = os.getcwd()
-
-    # yaml
-    file_path = Path(current_directory) /'config/tag-create-config.yaml'
-    config_str = file_path.read_text()
-
-
-    print(config_str)
-
-    config = yaml.load(config_str, Loader=yaml.FullLoader)
-
-
-    # prompt
-    prompt_path = config["prompt_path"] 
-    # qwenToken
-    qwenToken = config["api_token"]
-    # modelName
-    modelName = config["model"]
-    # db_url 
-    db_url = config["db_url"]
-
-    return current_directory,prompt_path,qwenToken,modelName, db_url
 
 if __name__ == "__main__":
-    current_directory, prompt_path, qwenToken, modelName, db_url = config_get()
+    current_directory, prompt_path, qwenToken, modelName, db_url = config_get_tag_create()
 
     # system prompt
     p_path = Path(current_directory) /prompt_path   
