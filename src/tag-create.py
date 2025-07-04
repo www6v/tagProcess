@@ -18,7 +18,6 @@ from db.ops import (input_select,
                     select_tag_creation_template)
 
 
-
 def config_get():
     current_directory = os.getcwd()
 

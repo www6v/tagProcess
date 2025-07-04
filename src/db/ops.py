@@ -10,10 +10,10 @@ import sqlalchemy
 # from tagging import content_tagging 
 import time
 
-import queue
-import threading
+# import queue
+# import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from db.openai_api import openai_api
+
 
 
 # from gevent import monkey; monkey.patch_all()
@@ -117,7 +117,7 @@ def input_insert(engine, metadata, validated_success_data, run_id):
         connection.commit() 
 
 
-def refined(metadata, engine, systemPrompt, api_token, modelName):
+def refined(metadata, engine, systemPrompt, api_token, modelName) -> list:
     dwd_issue = dwd_issue_tables(metadata)    
 
     systemPromptP = systemPrompt
@@ -125,23 +125,33 @@ def refined(metadata, engine, systemPrompt, api_token, modelName):
         query = dwd_issue.select()
         result = connection.execute(query)
 
+
+        userPrompt_list = []
         # obj_list = []
-        index = 0
         for row in result:
             print(row.content)
 
             userPrompt = row.content
-            systemPromptP = openai_api(userPrompt, systemPromptP, api_token, modelName) 
-            
+
+            userPrompt_list.append(userPrompt)
+
+
+        return  userPrompt_list  
+
+
+def insert_dwd_refined_tag(metadata,engine, content):
+
+    index = 0            
+    with engine.connect() as connection:  
             dwd_refined_tag = dwd_refined_tag_tables(metadata)
             insert_query = dwd_refined_tag.insert().values(
                 biz_type="market",
                 biz_type_index="market",
-                refined_tag=systemPromptP
+                refined_tag=content
             )
             index = index + 1
             connection.execute(insert_query)
-            connection.commit() 
+            connection.commit()     
 
 
 def select_tag_creation_template(metadata, engine) -> list:

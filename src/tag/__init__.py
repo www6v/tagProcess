@@ -1,10 +1,10 @@
 from . import jinja_render
-# from ..db import openai_api
+from . import openai_api
 from . import tagging
 
 __all__ = [
     "jinja_render",
-    # "openai_api",
+    "openai_api",
     "tagging"
 ]
 
