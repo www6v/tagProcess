@@ -12,8 +12,8 @@ import uuid
 from tag.tagging import content_tagging_creation
 from tag.jinja_render import jinja_render_file
 
-from db.ops import (input_select, 
-                    input_insert,
+from db.ops import (select_dwd_filtered_input, 
+                    insert_validated_success_data,
                     create_metadata, 
                     select_tag_creation_template)
 
@@ -64,10 +64,10 @@ if __name__ == "__main__":
 
     ##
     run_id = uuid.uuid4()
-    validate_success_data_list_list = input_select(engine, metadata, content_tagging_creation_partial, run_id)
+    validate_success_data_list_list = select_dwd_filtered_input(engine, metadata, content_tagging_creation_partial, run_id)
 
     for validate_success_data in validate_success_data_list_list:
-        input_insert(engine, metadata, validate_success_data, run_id)
+        insert_validated_success_data(engine, metadata, validate_success_data, run_id)
 
 
 

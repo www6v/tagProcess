@@ -7,6 +7,7 @@ from db.db_init import (create_db_engine,
                         dwd_refined_tag_tables,
                         tag_creation_template)
 import sqlalchemy
+from sqlalchemy import text
 # from tagging import content_tagging 
 import time
 
@@ -43,7 +44,7 @@ def create_metadata(db_url: str):
 
     return engine, metadata    
 
-def input_select(engine, metadata, content_tagging_creation_partial, run_id)-> list:
+def select_dwd_filtered_input(engine, metadata, content_tagging_creation_partial, run_id)-> list:
     dwd_filtered_input = input_tables(metadata)
     
     # print("Tables created:", dwd_filtered_input.name)
@@ -78,7 +79,7 @@ def input_select(engine, metadata, content_tagging_creation_partial, run_id)-> l
         #     print('*' * 50)        
 
         
-def input_insert(engine, metadata, validated_success_data, run_id):
+def insert_validated_success_data(engine, metadata, validated_success_data, run_id):
     validate = validate_tables(metadata)    
 
     with engine.connect() as connection:
@@ -138,19 +139,25 @@ def select_dwd_issue(metadata, engine, systemPrompt, api_token, modelName) -> li
 
         return  userPrompt_list  
 
-# todo
-def select_dwd_refined_tag(metadata,engine):
+
+def select_dwd_refined_tag(metadata,engine) -> str:
     dwd_refined_tag = dwd_refined_tag_tables(metadata)
     
     list_result = []
     with engine.connect() as connection:  
-        query = dwd_refined_tag.select()
-        result = connection.execute(query)
+        # query = dwd_refined_tag.select()
+        # result = connection.execute(query)
 
-        for row in result:
-            list_result.append({"id": row.id, "biz_type": row.biz_type, "biz_type_index": row.biz_type_index, "refined_tag": row.refined_tag})
+        # for row in result:
+        #     list_result.append({"id": row.id, "biz_type": row.biz_type, "biz_type_index": row.biz_type_index, "refined_tag": row.refined_tag})
 
-    return list_result
+        result = connection.execute( text("SELECT * FROM dwd_refined_tag WHERE create_time=(SELECT MAX(create_time) FROM dwd_refined_tag where biz_type ='market')") )
+        row = result.fetchone()
+        refined_tag = row.refined_tag
+
+        return refined_tag
+    
+    # return list_result
 
 
 def insert_dwd_refined_tag(metadata,engine, content):

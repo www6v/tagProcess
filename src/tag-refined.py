@@ -53,16 +53,14 @@ if __name__ == "__main__":
 
     engine,metadata = create_metadata(db_url)  
 
+    # categories
+    init_refined_tag = select_dwd_refined_tag(metadata,engine)
+    categories = init_refined_tag 
 
-    # todo
-    select_dwd_refined_tag(metadata,engine)
-    categories = "#my categories#" # get from db
-
+    # systemPrompt
     systemPrompt = jinja_render_systemPrompt(systemPrompt_without_categories, categories)
 
-    
-
-    
+    # userPrompt
     userPrompt_list = select_dwd_issue(metadata, engine, systemPrompt, api_token, modelName)
 
     for userPrompt in userPrompt_list:
