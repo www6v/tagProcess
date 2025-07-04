@@ -2,11 +2,6 @@ model:
        chatgpt-4o-latest
 prompt_path:
        config[refined_templates]/danone_refine_product.tpl
-# dsn:
-#   host: rm-uf6mb1y1i2970r1goao.mysql.rds.aliyuncs.com
-#   username: artgent_user
-#   password: ArtgentData789
-#   database: artgent
 query: 
   sql:
     select * from dwd_apple_learn_curve_input

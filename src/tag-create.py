@@ -29,11 +29,8 @@ def config_get():
     print(config_str)
 
     config = yaml.load(config_str, Loader=yaml.FullLoader)
-    # db
-    host = config["dsn"]["host"]
-    username = config["dsn"]["username"]
-    password = config["dsn"]["password"]
-    database = config["dsn"]["database"]  
+
+
     # prompt
     prompt_path = config["prompt_path"] 
     # qwenToken
