@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     engine,metadata = create_metadata(db_url)  
 
-    # categories
+    # init categories
     init_refined_tag = select_dwd_refined_tag(metadata,engine)
     categories = init_refined_tag 
 

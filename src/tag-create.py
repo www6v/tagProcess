@@ -62,10 +62,11 @@ if __name__ == "__main__":
     tag_creation_templates = select_tag_creation_template(metadata, engine)  
     jinja_render_file(tag_creation_templates)
 
-    ##
+    ## tagging with llm
     run_id = uuid.uuid4()
     validate_success_data_list_list = select_dwd_filtered_input(engine, metadata, content_tagging_creation_partial, run_id)
 
+    ## tag insert db
     for validate_success_data in validate_success_data_list_list:
         insert_validated_success_data(engine, metadata, validate_success_data, run_id)
 

@@ -5,7 +5,8 @@ from db.db_init import (create_db_engine,
                         validate_tables, 
                         dwd_issue_tables, 
                         dwd_refined_tag_tables,
-                        tag_creation_template)
+                        tag_creation_template,
+                        tag_mapping_template)
 import sqlalchemy
 from sqlalchemy import text
 # from tagging import content_tagging 
@@ -175,6 +176,8 @@ def insert_dwd_refined_tag(metadata,engine, content):
             connection.commit()     
 
 
+##########   template 
+
 def select_tag_creation_template(metadata, engine) -> list:
     tag_creation_template_table = tag_creation_template(metadata)
     
@@ -187,6 +190,21 @@ def select_tag_creation_template(metadata, engine) -> list:
             list_result.append({"id": row.id, "role": row.role, "target":row.target, "tag_list": row.tag_list})
 
     return list_result
+
+
+def select_tag_mapping_template(metadata, engine) -> list:
+    tag_tag_mapping_template = tag_mapping_template(metadata)
+    
+    list_result = []
+    with engine.connect() as connection:  
+        query = tag_tag_mapping_template.select().where(tag_tag_mapping_template.c.id == 1)
+        result = connection.execute(query)
+
+        for row in result:
+            list_result.append({"id": row.id, "role":row.role, "target":row.target, "category": row.category})
+
+    return list_result
+
 
 
 # if __name__ == "__main__":
