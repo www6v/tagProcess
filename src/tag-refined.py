@@ -61,7 +61,7 @@ if __name__ == "__main__":
     systemPrompt = jinja_render_systemPrompt(systemPrompt_without_categories, categories)
 
     # userPrompt
-    userPrompt_list = select_dwd_issue(metadata, engine, systemPrompt, api_token, modelName)
+    userPrompt_list = select_dwd_issue(metadata, engine)
 
     for userPrompt in userPrompt_list:
             content = openai_api(userPrompt, systemPrompt, api_token, modelName) 

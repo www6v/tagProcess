@@ -12,19 +12,10 @@ from sqlalchemy import text
 # from tagging import content_tagging 
 import time
 
-# import queue
-# import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
-
-# from gevent import monkey; monkey.patch_all()
-# import gevent
-# from gevent.queue import Queue  # 队列 gevent中的队列
-# import random
-
-
-pool = ThreadPoolExecutor(max_workers=1000)  # 创建线程池，最大线程数为10
+pool = ThreadPoolExecutor(max_workers=1000)  
 
 
 def validate_success_data(content_tagging_creation_partial, ids, content):
@@ -36,7 +27,6 @@ def validate_success_data(content_tagging_creation_partial, ids, content):
 
 
 def create_metadata(db_url: str):
-    # db_url = "sqlite:///example.db"  # Replace with your actual database URL# Example MySQL URL
     engine = create_db_engine(db_url)
     
     init_db(engine)
@@ -45,11 +35,9 @@ def create_metadata(db_url: str):
 
     return engine, metadata    
 
-def select_dwd_filtered_input(engine, metadata, content_tagging_creation_partial, run_id)-> list:
+def select_dwd_filtered_input(engine, metadata)-> list:
     dwd_filtered_input = input_tables(metadata)
     
-    # print("Tables created:", dwd_filtered_input.name)
-
     with engine.connect() as connection:
         # metadata.create_all(connection)
         
@@ -60,25 +48,19 @@ def select_dwd_filtered_input(engine, metadata, content_tagging_creation_partial
         query = dwd_filtered_input.select()
         result = connection.execute(query)
 
-        validate_success_data_list = []
-        # obj_list = []
+        input_list = []
+
+
         for row in result:
-            # print(row)
-            # print([row.ids, row.content])
             print(row.ids)
 
-            validate_success_data = content_tagging_creation_partial(row.ids, row.content)
+            input_list.append({"ids": row.ids, "content": row.content})
 
-            validate_success_data_list.append(validate_success_data)
-            # obj = pool.submit(validate_success_data, content_tagging_creation_partial, row.ids, row.content)
-            # obj_list.append(obj)
 
-        return validate_success_data_list
-        # for future in as_completed(obj_list):
-        #     data = future.result()
-        #     print(data)
-        #     print('*' * 50)        
 
+        return input_list
+    
+   
         
 def insert_validated_success_data(engine, metadata, validated_success_data, run_id):
     validate = validate_tables(metadata)    
@@ -119,10 +101,10 @@ def insert_validated_success_data(engine, metadata, validated_success_data, run_
         connection.commit() 
 
 
-def select_dwd_issue(metadata, engine, systemPrompt, api_token, modelName) -> list:
+def select_dwd_issue(metadata, engine) -> list:
     dwd_issue = dwd_issue_tables(metadata)    
 
-    systemPromptP = systemPrompt
+    # systemPromptP = systemPrompt
     with engine.connect() as connection:        
         query = dwd_issue.select()
         result = connection.execute(query)
@@ -177,7 +159,6 @@ def insert_dwd_refined_tag(metadata,engine, content):
 
 
 ##########   template 
-
 def select_tag_creation_template(metadata, engine) -> list:
     tag_creation_template_table = tag_creation_template(metadata)
     
