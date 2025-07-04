@@ -5,7 +5,10 @@ import os
 import yaml
 from pathlib import Path
 
-from db.ops import create_metadata, refined, insert_dwd_refined_tag
+from db.ops import (create_metadata, 
+                    select_dwd_issue, 
+                    insert_dwd_refined_tag, 
+                    select_dwd_refined_tag)
 from tag.jinja_render import jinja_render_systemPrompt
 from tag.openai_api import openai_api
 
@@ -48,15 +51,19 @@ if __name__ == "__main__":
     print(systemPrompt_without_categories)
 
 
+    engine,metadata = create_metadata(db_url)  
 
+
+    # todo
+    select_dwd_refined_tag(metadata,engine)
     categories = "#my categories#" # get from db
 
     systemPrompt = jinja_render_systemPrompt(systemPrompt_without_categories, categories)
-    engine,metadata = create_metadata(db_url)  
+
     
 
     
-    userPrompt_list = refined(metadata, engine, systemPrompt, api_token, modelName)
+    userPrompt_list = select_dwd_issue(metadata, engine, systemPrompt, api_token, modelName)
 
     for userPrompt in userPrompt_list:
             content = openai_api(userPrompt, systemPrompt, api_token, modelName) 

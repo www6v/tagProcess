@@ -117,7 +117,7 @@ def input_insert(engine, metadata, validated_success_data, run_id):
         connection.commit() 
 
 
-def refined(metadata, engine, systemPrompt, api_token, modelName) -> list:
+def select_dwd_issue(metadata, engine, systemPrompt, api_token, modelName) -> list:
     dwd_issue = dwd_issue_tables(metadata)    
 
     systemPromptP = systemPrompt
@@ -137,6 +137,20 @@ def refined(metadata, engine, systemPrompt, api_token, modelName) -> list:
 
 
         return  userPrompt_list  
+
+# todo
+def select_dwd_refined_tag(metadata,engine):
+    dwd_refined_tag = dwd_refined_tag_tables(metadata)
+    
+    list_result = []
+    with engine.connect() as connection:  
+        query = dwd_refined_tag.select()
+        result = connection.execute(query)
+
+        for row in result:
+            list_result.append({"id": row.id, "biz_type": row.biz_type, "biz_type_index": row.biz_type_index, "refined_tag": row.refined_tag})
+
+    return list_result
 
 
 def insert_dwd_refined_tag(metadata,engine, content):
