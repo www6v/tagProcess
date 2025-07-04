@@ -155,6 +155,8 @@ def select_tag_creation_template(metadata, engine) -> list:
             list_result.append({"id": row.id, "role": row.role, "target":row.target, "tag_list": row.tag_list})
 
     return list_result
+
+
 # if __name__ == "__main__":
 #     input_select()
 

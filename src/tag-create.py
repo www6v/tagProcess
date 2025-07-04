@@ -13,6 +13,9 @@ from tag.tagging import content_tagging_creation
 from db.ops import input_select
 from db.ops import create_metadata
 
+from db.ops import select_tag_creation_template
+from tag.jinja_render import jinja_render_file
+
 
 def config_get():
     current_directory = os.getcwd()
@@ -54,8 +57,12 @@ if __name__ == "__main__":
     engine,metadata = create_metadata(db_url)
     content_tagging_creation_partial = partial(content_tagging_creation, systemPrompt ,qwenToken, modelName)
 
-    run_id = uuid.uuid4()
+    ## tag template
+    tag_creation_templates = select_tag_creation_template(metadata, engine)  
+    jinja_render_file(tag_creation_templates)
 
+    ##
+    run_id = uuid.uuid4()
     input_select(engine, metadata, content_tagging_creation_partial, run_id)
 
 

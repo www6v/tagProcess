@@ -6,9 +6,9 @@ import yaml
 from pathlib import Path
 
 from db.ops import create_metadata
-from db.ops import refined, select_tag_creation_template
+from db.ops import refined
+from tag.jinja_render import jinja_render_systemPrompt
 # from db_init import  create_dwd_issue_tables
-from tag.jinja_render import jinja_render_systemPrompt, jinja_render_file
 
 def config_get():
     current_directory = os.getcwd()
@@ -54,8 +54,5 @@ if __name__ == "__main__":
 
     engine,metadata = create_metadata(db_url)  
     
-    tag_creation_templates = select_tag_creation_template(metadata, engine)  
-    jinja_render_file(tag_creation_templates)
-
     refined(metadata, engine, systemPrompt, api_token, modelName)
 
