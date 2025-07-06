@@ -26,10 +26,11 @@ if __name__ == "__main__":
     tag_creation_templates = select_tag_creation_template(metadata, engine)  
     systemPrompt = jinja_render_file_system_prompt(tag_creation_templates)
 
-    ## tagging with llm
+    ## userPrompt from db
     run_id = uuid.uuid4()
     input_list = select_dwd_filtered_input(engine, metadata)
 
+    ## tagging with llm
     validate_success_data_list = []
     for input in input_list:
        validate_success_data = content_tagging_creation(systemPrompt ,qwenToken, modelName, input['ids'], input['content'])
