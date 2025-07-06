@@ -1,7 +1,7 @@
 model:
        qwen-plus
-prompt_path:
-       config/creation_prompts/danone_post.tpl
+# prompt_path:
+#        config/creation_prompts/danone_post.tpl
 query: 
   sql:
     select * from dwd_apple_learn_curve_input

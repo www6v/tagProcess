@@ -6,25 +6,25 @@ from db.ops import (select_dwd_filtered_input,
                     create_metadata, 
                     select_tag_creation_template)
 from tag.tagging import content_tagging_creation
-from tag.jinja_render import jinja_render_file
+from tag.jinja_render import jinja_render_file_system_prompt
 from tag.config import config_get_tag_create
 
 
 if __name__ == "__main__":
-    current_directory, prompt_path, qwenToken, modelName, db_url = config_get_tag_create()
+    current_directory, qwenToken, modelName, db_url = config_get_tag_create()
 
     # system prompt
-    p_path = Path(current_directory) /prompt_path   
-    systemPrompt = p_path.read_text()
-    print(systemPrompt)
+    # p_path = Path(current_directory) /prompt_path   
+    # systemPrompt = p_path.read_text()
+    # print(systemPrompt)
 
-    systemPrompt = '你是个专业的标签生成器，请根据内容生成标签。'
+    # systemPrompt = '你是个专业的标签生成器，请根据内容生成标签。'
 
     engine,metadata = create_metadata(db_url)
 
     ## tag template
     tag_creation_templates = select_tag_creation_template(metadata, engine)  
-    jinja_render_file(tag_creation_templates)
+    systemPrompt = jinja_render_file_system_prompt(tag_creation_templates)
 
     ## tagging with llm
     run_id = uuid.uuid4()

@@ -16,7 +16,7 @@ def config_get_tag_create():
 
 
     # prompt
-    prompt_path = config["prompt_path"] 
+    # prompt_path = config["prompt_path"] 
     # qwenToken
     qwenToken = config["api_token"]
     # modelName
@@ -24,7 +24,7 @@ def config_get_tag_create():
     # db_url 
     db_url = config["db_url"]
 
-    return current_directory,prompt_path,qwenToken,modelName, db_url
+    return current_directory, qwenToken, modelName, db_url
 
 
 def config_get_tag_refined():

@@ -15,7 +15,7 @@ def jinja_render_systemPrompt(systemPrompt:str, categories:str):
     return output
 
 
-def jinja_render_file(tag_creation_templates:list):
+def jinja_render_file_system_prompt(tag_creation_templates:list)->str:
     tag_creation_template = tag_creation_templates[0] 
 
     role = tag_creation_template['role']
@@ -38,7 +38,7 @@ def jinja_render_file(tag_creation_templates:list):
     tag_json_string = json.dumps(tag_json_list, ensure_ascii=False, indent=2)
 
 
-    current_directory,prompt_path,qwenToken,modelName, db_url = config_get_tag_create()
+    current_directory,qwenToken,modelName, db_url = config_get_tag_create()
     # 定义模板  
     template = Template(open(current_directory + "/config/promt_template/tag_creation.tpl").read())
 
@@ -51,11 +51,13 @@ def jinja_render_file(tag_creation_templates:list):
         tag_json_string=tag_json_string
         )
     
-    # 打印生成的 HTML
+
     print(output)
 
+    return output
+
 if __name__ == "__main__":
-    jinja_render_file()
+    jinja_render_file_system_prompt()
 
 
 

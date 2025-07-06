@@ -18,12 +18,12 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 pool = ThreadPoolExecutor(max_workers=1000)  
 
 
-def validate_success_data(content_tagging_creation_partial, ids, content):
-    """
-    Validate the success data by calling the content tagging creation function.
-    """
-    validated_success_data = content_tagging_creation_partial(ids, content)
-    return validated_success_data
+# def validate_success_data(content_tagging_creation_partial, ids, content):
+#     """
+#     Validate the success data by calling the content tagging creation function.
+#     """
+#     validated_success_data = content_tagging_creation_partial(ids, content)
+#     return validated_success_data
 
 
 def create_metadata(db_url: str):
