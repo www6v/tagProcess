@@ -34,7 +34,7 @@ if __name__ == "__main__":
     validate_success_data_list = []
     for input in input_list:
        validate_success_data = content_tagging_creation(systemPrompt ,qwenToken, modelName, input['ids'], input['content'])
-
+       validate_success_data_list.append(validate_success_data)
 
     ## tag insert db
     for validate_success_data in validate_success_data_list:
