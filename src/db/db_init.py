@@ -98,6 +98,20 @@ def tag_creation_template(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
     return tag_creation_template
 
 
+def tag_refined_template(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
+    tag_refined_template = sqlalchemy.Table(
+        'tag_refined_template', metadata,
+        sqlalchemy.Column('id', sqlalchemy.INTEGER, primary_key=True, autoincrement=True),   
+        sqlalchemy.Column('role', sqlalchemy.String(500), nullable=True),         
+        sqlalchemy.Column('target', sqlalchemy.String(500), nullable=True),  
+        sqlalchemy.Column('category', sqlalchemy.String(5000), nullable=True), # 暂时没用
+        extend_existing=True              
+    )   
+
+    return tag_refined_template
+
+
+############  template
 def tag_mapping_template(metadata: sqlalchemy.MetaData) -> sqlalchemy.Table:
     tag_mapping_template = sqlalchemy.Table(
         'tag_mapping_template', metadata,

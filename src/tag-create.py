@@ -6,12 +6,12 @@ from db.ops import (select_dwd_filtered_input,
                     create_metadata, 
                     select_tag_creation_template)
 from tag.tagging import content_tagging_creation
-from tag.jinja_render import jinja_render_file_system_prompt
+from tag.jinja_render import jinja_render_file_system_prompt_for_creation
 from tag.config import config_get_tag_create
 
 
 if __name__ == "__main__":
-    current_directory, qwenToken, modelName, db_url = config_get_tag_create()
+    current_directory,prompt_path, qwenToken, modelName, db_url = config_get_tag_create()
 
     # system prompt
     # p_path = Path(current_directory) /prompt_path   
@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     ## tag template
     tag_creation_templates = select_tag_creation_template(metadata, engine)  
-    systemPrompt = jinja_render_file_system_prompt(tag_creation_templates)
+    systemPrompt = jinja_render_file_system_prompt_for_creation(tag_creation_templates)
 
     ## userPrompt from db
     run_id = uuid.uuid4()

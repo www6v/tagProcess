@@ -7,7 +7,7 @@
 
 ## 字段定义
 {% for foo in tags %}
-       {{ foo.name }}  {{ foo.tag_name }}   : {{ foo.desc }}       
+       {{ foo.name }} ({{ foo.tag_name }})    : {{ foo.desc }}       
 {% endfor %}
 
 

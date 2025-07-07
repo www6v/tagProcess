@@ -1,11 +1,11 @@
 model:
-       qwen-plus
-# prompt_path:
-#        config/creation_prompts/danone_post.tpl
+  qwen-plus
+prompt_path:
+  config/promt_template/tag_creation.tpl
 query: 
   sql:
     select * from dwd_apple_learn_curve_input
 db_url:
   mysql+pymysql://artgent_user:ArtgentData789@rm-uf6mb1y1i2970r1goao.mysql.rds.aliyuncs.com/artgent
 api_token:
-  sk-ff84a4311f0d484581f7decac8b54829
+  xxx

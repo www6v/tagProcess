@@ -1,21 +1,35 @@
 from jinja2 import Template
 import json
 # import os
-from tag.config import config_get_tag_create
+from tag.config import config_get_tag_create, config_get_tag_refined
 
 
-def jinja_render_systemPrompt(systemPrompt:str, categories:str):
+def jinja_render_systemPrompt_for_refined(tag_refined_templates:list,  categories:str):
+    tag_refined_template = tag_refined_templates[0]     
 
-    template = Template(systemPrompt)
+    role = tag_refined_template['role']
+
+    target=tag_refined_template['target']
+
+    # todo: category 字段暂时没用
+
+    # template = Template(systemPrompt)
 
 
-    output = template.render(categories=categories)
+    current_directory,prompt_path,qwenToken,modelName, db_url = config_get_tag_refined()
+    # 定义模板  
+    template = Template(open(current_directory + prompt_path).read())    
+
+    output = template.render(
+        role=role,
+        target=target,
+        categories=categories)
 
     # print(output) 
     return output
 
 
-def jinja_render_file_system_prompt(tag_creation_templates:list)->str:
+def jinja_render_file_system_prompt_for_creation(tag_creation_templates:list)->str:
     tag_creation_template = tag_creation_templates[0] 
 
     role = tag_creation_template['role']
@@ -38,9 +52,9 @@ def jinja_render_file_system_prompt(tag_creation_templates:list)->str:
     tag_json_string = json.dumps(tag_json_list, ensure_ascii=False, indent=2)
 
 
-    current_directory,qwenToken,modelName, db_url = config_get_tag_create()
+    current_directory,prompt_path, qwenToken,modelName, db_url = config_get_tag_create()
     # 定义模板  
-    template = Template(open(current_directory + "/config/promt_template/tag_creation.tpl").read())
+    template = Template(open(current_directory +  '/' + prompt_path).read())
 
 
     # 渲染模板
@@ -57,7 +71,7 @@ def jinja_render_file_system_prompt(tag_creation_templates:list)->str:
     return output
 
 if __name__ == "__main__":
-    jinja_render_file_system_prompt()
+    jinja_render_file_system_prompt_for_creation()
 
 
 
