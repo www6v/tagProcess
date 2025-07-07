@@ -5,7 +5,5 @@ prompt_path:
 query: 
   sql:
     select * from dwd_apple_learn_curve_input
-db_url:
-  mysql+pymysql://artgent_user:ArtgentData789@rm-uf6mb1y1i2970r1goao.mysql.rds.aliyuncs.com/artgent
 api_token:
   xxx

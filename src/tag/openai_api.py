@@ -1,10 +1,12 @@
 from openai import OpenAI
 from openai import RateLimitError, OpenAIError
+from tag.config import config_get_tag_refined
 
 
 
+def openai_api(userPrompt, systemPrompt):
+    current_directory, prompt_path, api_key, modelName = config_get_tag_refined()
 
-def openai_api(userPrompt, systemPrompt, api_key, modelName):
     # my_key = ""
     client = OpenAI(api_key=api_key)
 

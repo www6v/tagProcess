@@ -5,6 +5,8 @@ import time
 import json
 import asyncio
 
+from tag.config import config_get_tag_create
+
 
 def send_post_request(url: str, json_body: dict, headers: dict = None, params: dict = None)  -> requests.Response:
     """
@@ -81,32 +83,34 @@ def prepare(userPrompt, systemPrompt, qwenToken, modelName):
     return url,json_body,headers,params
 
 
-def content_tagging(strDict: str, prompt:str, qwenToken:str,modelName:str) -> dict:
-    url, json_body, headers, params = prepare(strDict, prompt, qwenToken, modelName)
+# def content_tagging(userPrompt: str, prompt:str, qwenToken:str,modelName:str) -> dict:
+#     url, json_body, headers, params = prepare(userPrompt, prompt, qwenToken, modelName)
 
-    response = send_post_request(url, json_body, headers, params)
+#     response = send_post_request(url, json_body, headers, params)
 
-    # json_str = str(response.json())
-    # data = json.loads(json_str)
+#     # json_str = str(response.json())
+#     # data = json.loads(json_str)
 
-    data = response.json()
-    # Extract the required fields
-    validated_success_data = {
-        "input_tokens": data["usage"]["input_tokens"],
-        "output_tokens": data["usage"]["output_tokens"],
-        "total_tokens": data["usage"]["total_tokens"],
-        "request_id": data["request_id"],
-        "finish_reason": data["output"]["choices"][0]["finish_reason"],
-        "content": data["output"]["choices"][0]["message"]["content"]
-    }
+#     data = response.json()
+#     # Extract the required fields
+#     validated_success_data = {
+#         "input_tokens": data["usage"]["input_tokens"],
+#         "output_tokens": data["usage"]["output_tokens"],
+#         "total_tokens": data["usage"]["total_tokens"],
+#         "request_id": data["request_id"],
+#         "finish_reason": data["output"]["choices"][0]["finish_reason"],
+#         "content": data["output"]["choices"][0]["message"]["content"]
+#     }
 
-    return {
-        "result": validated_success_data,
-    }
+#     return {
+#         "result": validated_success_data,
+#     }
 
 ### add
-def content_tagging_creation(systemPrompt:str, qwenToken:str,modelName:str, ids:str, userSystem: str) -> dict:
-    url, json_body, headers, params = prepare(userSystem, systemPrompt, qwenToken, modelName)
+def content_tagging_creation(systemPrompt:str, ids:str, userPrompt: str) -> dict:
+    current_directory,prompt_path, qwenToken, modelName = config_get_tag_create()
+
+    url, json_body, headers, params = prepare(userPrompt, systemPrompt, qwenToken, modelName)
     print(f"tagging with llm.  --> ids: {ids}")
 
     response = send_post_request(url, json_body, headers, params)

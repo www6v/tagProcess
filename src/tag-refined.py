@@ -7,19 +7,11 @@ from db.ops import (create_metadata,
                     select_tag_refined_template)
 from tag.jinja_render import jinja_render_systemPrompt_for_refined
 from tag.openai_api import openai_api
-from tag.config import config_get_tag_refined
+from tag.config import config_get_tag_refined, config_global
 
 
 if __name__ == "__main__":
-
-
-    current_directory, prompt_path, api_token, modelName, db_url = config_get_tag_refined()
-
-    ###  system prompt
-    # p_path = Path(current_directory) /prompt_path   
-    # systemPrompt_without_categories = p_path.read_text()
-    # print(systemPrompt_without_categories)
-
+    db_url = config_global()    
 
     engine,metadata = create_metadata(db_url)  
 
@@ -35,7 +27,7 @@ if __name__ == "__main__":
     userPrompt_list = select_dwd_issue(metadata, engine)
 
     for userPrompt in userPrompt_list:
-            content = openai_api(userPrompt, systemPrompt, api_token, modelName) 
+            content = openai_api(userPrompt, systemPrompt) 
             
             insert_dwd_refined_tag(metadata, engine, content)
 

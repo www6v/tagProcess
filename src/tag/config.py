@@ -2,6 +2,24 @@ import os
 import yaml
 from pathlib import Path
 
+
+def config_global():
+    current_directory = os.getcwd()
+
+    # yaml
+    file_path = Path(current_directory) /'config/app/global.yaml'
+    config_str = file_path.read_text()
+
+
+    print(config_str)
+
+    config = yaml.load(config_str, Loader=yaml.FullLoader)
+
+    # db_url 
+    db_url = config["db_url"]
+
+    return db_url
+
 def config_get_tag_create():
     current_directory = os.getcwd()
 
@@ -22,9 +40,9 @@ def config_get_tag_create():
     # modelName
     modelName = config["model"]
     # db_url 
-    db_url = config["db_url"]
+    # db_url = config["db_url"]
 
-    return current_directory, prompt_path, qwenToken, modelName, db_url
+    return current_directory, prompt_path, qwenToken, modelName
 
 
 def config_get_tag_refined():
@@ -45,7 +63,7 @@ def config_get_tag_refined():
     api_token = config["api_token"]
     # modelName
     modelName = config["model"]
-    # db_url 
-    db_url = config["db_url"]
+    # # db_url 
+    # db_url = config["db_url"]
 
-    return current_directory,prompt_path,api_token,modelName, db_url
+    return current_directory,prompt_path,api_token,modelName

@@ -15,7 +15,7 @@ def jinja_render_systemPrompt_for_refined(tag_refined_templates:list,  categorie
 
     # template = Template(systemPrompt)
 
-    current_directory,prompt_path,qwenToken,modelName, db_url = config_get_tag_refined()
+    current_directory,prompt_path,qwenToken,modelName = config_get_tag_refined()
     # 定义模板  
     template = Template(open(current_directory + '/' + prompt_path).read())    
 
@@ -51,7 +51,7 @@ def jinja_render_file_system_prompt_for_creation(tag_creation_templates:list)->s
     tag_json_string = json.dumps(tag_json_list, ensure_ascii=False, indent=2)
 
 
-    current_directory,prompt_path, qwenToken,modelName, db_url = config_get_tag_create()
+    current_directory,prompt_path, qwenToken,modelName = config_get_tag_create()
     # 定义模板  
     template = Template(open(current_directory +  '/' + prompt_path).read())
 
