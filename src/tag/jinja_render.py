@@ -15,10 +15,9 @@ def jinja_render_systemPrompt_for_refined(tag_refined_templates:list,  categorie
 
     # template = Template(systemPrompt)
 
-
     current_directory,prompt_path,qwenToken,modelName, db_url = config_get_tag_refined()
     # 定义模板  
-    template = Template(open(current_directory + prompt_path).read())    
+    template = Template(open(current_directory + '/' + prompt_path).read())    
 
     output = template.render(
         role=role,
