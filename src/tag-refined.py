@@ -26,7 +26,8 @@ if __name__ == "__main__":
     # userPrompt
     userPrompt_list = select_dwd_issue(metadata, engine)
 
-    for userPrompt in userPrompt_list:
+    for userPromptOne in userPrompt_list:
+            userPrompt = userPromptOne['content']
             content = openai_api(userPrompt, systemPrompt) 
             
             insert_dwd_refined_tag(metadata, engine, content)

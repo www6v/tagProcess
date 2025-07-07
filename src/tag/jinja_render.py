@@ -1,7 +1,7 @@
 from jinja2 import Template
 import json
 # import os
-from tag.config import config_get_tag_create, config_get_tag_refined
+from tag.config import config_get_tag_create, config_get_tag_refined, config_get_tag_mapping
 
 
 def jinja_render_systemPrompt_for_refined(tag_refined_templates:list,  categories:str):
@@ -68,6 +68,31 @@ def jinja_render_file_system_prompt_for_creation(tag_creation_templates:list)->s
     print(output)
 
     return output
+
+
+
+def jinja_render_systemPrompt_for_mapping(tag_mapping_templates:list,  categories:str):
+    tag_mapping_template = tag_mapping_templates[0]     
+
+    role = tag_mapping_template['role']
+    target = tag_mapping_template['target']
+
+    # todo: category 字段暂时没用
+
+    # template = Template(systemPrompt)
+
+    current_directory,prompt_path,qwenToken,modelName = config_get_tag_mapping()
+    # 定义模板  
+    template = Template(open(current_directory + '/' + prompt_path).read())    
+
+    output = template.render(
+        role=role,
+        target=target,
+        categories=categories)
+
+    # print(output) 
+    return output
+
 
 if __name__ == "__main__":
     jinja_render_file_system_prompt_for_creation()

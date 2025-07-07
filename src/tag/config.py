@@ -67,3 +67,27 @@ def config_get_tag_refined():
     # db_url = config["db_url"]
 
     return current_directory,prompt_path,api_token,modelName
+
+
+def config_get_tag_mapping():
+    current_directory = os.getcwd()
+
+    # yaml
+    file_path = Path(current_directory) /'config/app/tag-mapping-config.yaml'
+    config_str = file_path.read_text()
+
+
+    print(config_str)
+
+    config = yaml.load(config_str, Loader=yaml.FullLoader)
+
+    # prompt
+    prompt_path = config["prompt_path"] 
+    # api_token
+    api_token = config["api_token"]
+    # modelName
+    modelName = config["model"]
+    # # db_url 
+    # db_url = config["db_url"]
+
+    return current_directory,prompt_path,api_token,modelName

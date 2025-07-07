@@ -1,0 +1,9 @@
+model:
+  qwen-plus
+prompt_path:
+  config/promt_template/tag_mapping.tpl
+query: 
+  sql:
+    select * from dwd_apple_learn_curve_input
+api_token:
+  xxx

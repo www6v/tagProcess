@@ -7,10 +7,12 @@ from db.ops import (select_dwd_filtered_input,
                     select_tag_creation_template)
 from tag.tagging import content_tagging_creation
 from tag.jinja_render import jinja_render_file_system_prompt_for_creation
-from tag.config import config_get_tag_create, config_global
+from tag.config import  config_global
 
 
 if __name__ == "__main__":
+    run_id = uuid.uuid4()
+
     db_url = config_global()
 
     engine,metadata = create_metadata(db_url)
@@ -21,8 +23,8 @@ if __name__ == "__main__":
 
     # systemPrompt = '你是个专业的标签生成器，请根据内容生成标签。'
 
+
     ## userPrompt from db
-    run_id = uuid.uuid4()
     input_list = select_dwd_filtered_input(engine, metadata)
 
     ## tagging with llm

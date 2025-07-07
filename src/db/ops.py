@@ -117,9 +117,10 @@ def select_dwd_issue(metadata, engine) -> list:
         for row in result:
             print(row.content)
 
-            userPrompt = row.content
+            ids = row.ids
+            content = row.content
 
-            userPrompt_list.append(userPrompt)
+            userPrompt_list.append({ 'ids' : ids, 'content' : content})
 
 
         return  userPrompt_list  
